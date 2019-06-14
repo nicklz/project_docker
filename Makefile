@@ -70,10 +70,11 @@ install:
 	@echo "Cloning codebase"
 	git clone $(PROJECT_GIT) data/www/project
 	make settings
-
+	
 settings:
 	cp config/drupal/settings.php data/www/project$(PROJECT_GIT_DOCROOT)/sites/default/settings.local.php
 	sed -i -e 's/PROJECT_NAME/$(PROJECT_NAME)/g' data/www/project$(PROJECT_GIT_DOCROOT)/sites/default/settings.local.php
+	docker$(WINDOWS_SUPPORT) exec -u 0 -ti $(PROJECT_NAME)_web bash -c  'echo "create database $(PROJECT_NAME);" | mysql -uroot -h mysql --password="root"'
 
 
 sync:
