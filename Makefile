@@ -22,9 +22,6 @@ down:
 	@echo "Removing containers."
 	docker-compose$(WINDOWS_SUPPORT) down
 
-rsync:
-	docker$(WINDOWS_SUPPORT) exec -u 0 -ti $(PROJECT_NAME)_web bash -c  ' apt-get install rsync -y && while true ; do rsync -avW --inplace --no-compress --delete --exclude node_modules --exclude .git --exclude vendor/bin/phpcbf --exclude vendor/bin/phpcs --exclude vendor/bin/phpunit --exclude vendor/bin/simple-phpunit /var/www/project/ /rsync; done;'
-
 stop:
 	@echo "Stopping containers for $(PROJECT_NAME)..."
 	@docker-compose$(WINDOWS_SUPPORT) stop
@@ -78,7 +75,7 @@ settings:
 
 
 sync:
-	docker$(WINDOWS_SUPPORT) exec -u 0 -ti $(PROJECT_NAME)_web bash -c  'echo "drop database $(PROJECT_NAME);" | mysql -uroot -h mysql --password="root"'
+	docker$(WINDOWS_SUPPORT) exec -u 0 -ti $(PROJECT_NAME)_web bash -c  'echo "drop database $(PROJECT_NAME);" | mysql -uroot -h mysql --password="root"' > /dev/null 2>&1
 	docker$(WINDOWS_SUPPORT) exec -u 0 -ti $(PROJECT_NAME)_web bash -c  'echo "create database $(PROJECT_NAME);" | mysql -uroot -h mysql --password="root"'
 	docker$(WINDOWS_SUPPORT) exec -u 0 -ti $(PROJECT_NAME)_web bash -c  'mysql -u root -h mysql -p $(PROJECT_NAME) --password="root" < /var/www/dump.sql'
 	make cr
@@ -101,4 +98,4 @@ composer:
 	cd data/www/project$(PROJECT_GIT_DOCROOT) && composer install
 
 quickstart:
-	make install && make up && make stop && make up && make download && make download && make sync && make rsync
+	make install && make up && make stop && make up && make download && make download && make sync 
