@@ -1,13 +1,13 @@
-# Installation Instructions (Drupal 8) 
+# Installation Instructions (Drupal 8 + WSL2) 
 
-1. Install https://docs.docker.com/install/
+1. Install WSL2 (https://docs.microsoft.com/en-us/windows/wsl/wsl2-install) and docker 
 2. git clone git@github.com:nicklz/project_docker.git projectname
 3. cd projectname
 4. cp .env.example .env && vi .env (Configure fields here)
-5. make install && make up && make sync (repeat make up && make sync if this fails)
-6. make rsync (then ctrl + Z if you dont like watching the files syncing)
-7. Add 127.0.0.1 local.projectname.com to hosts file
-8. Visit project website entered in .env file (example: local.projectname.com:20003)
+5. sudo make install && sudo make up
+6. sudo make download (or place database sql dump in data/www/dump.sql)
+7. sudo make sync
+8. Add ip from command:   ip addr | grep eth0     with local.projectname.com to hosts file
+9. sudo make uli (and use link to log into site)
 
-or git clone git@github.com:nicklz/project_docker.git projectname && cd projectname && cp .env.example .env && make install && make up && make up && sleep 120 && make up && make sync && make rsync
 
